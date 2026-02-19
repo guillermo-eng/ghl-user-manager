@@ -1,5 +1,6 @@
 const GHL_BASE = "https://services.leadconnectorhq.com";
 const VERSION = "2021-07-28";
+res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
 
 // Auto-generate a secure random password
 function generatePassword() {
@@ -186,7 +187,19 @@ export default async function handler(req, res) {
       const data = await response.json();
       return res.status(response.status).json(data);
     }
-
+// PUT: update user role
+if (req.method === "PUT") {
+  const userId = req.query.userId;
+  const { role } = req.body;
+  if (!userId) return res.status(400).json({ error: "Missing userId" });
+  const response = await fetch(`${GHL_BASE}/users/${userId}`, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ role }),
+  });
+  const data = await response.json();
+  return res.status(response.status).json(data);
+}
     return res.status(405).json({ error: "Method not allowed" });
 
   } catch (err) {
