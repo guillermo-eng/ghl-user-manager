@@ -3,9 +3,19 @@ const VERSION = "2021-07-28";
 
 // Auto-generate a secure random password
 function generatePassword() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%";
+  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const lower = "abcdefghjkmnpqrstuvwxyz";
+  const numbers = "23456789";
+  const special = "!@#$%";
+  const all = upper + lower + numbers + special;
+  // Guarantee at least one of each required type
   let pass = "";
-  for (let i = 0; i < 12; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+  pass += upper[Math.floor(Math.random() * upper.length)];
+  pass += lower[Math.floor(Math.random() * lower.length)];
+  pass += numbers[Math.floor(Math.random() * numbers.length)];
+  pass += special[Math.floor(Math.random() * special.length)];
+  // Fill remaining 8 characters
+  for (let i = 0; i < 8; i++) pass += all[Math.floor(Math.random() * all.length)];
   return pass;
 }
 
