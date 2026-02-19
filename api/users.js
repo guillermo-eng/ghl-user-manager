@@ -135,31 +135,35 @@ export default async function handler(req, res) {
 
     // ── POST: create a new user ──
     if (req.method === "POST") {
-      const { firstName, lastName, email, phone, role } = req.body;
-      const isAdmin = (role || "user") === "admin";
+  const { firstName, lastName, email, phone, role } = req.body;
+  const isAdmin = (role || "user") === "admin";
 
-      const payload = {
-        locationIds: [LOCATION_ID],
-        firstName,
-        lastName,
-        email,
-        phone:    phone || "",
-        password: generatePassword(),
-        role:     role || "user",
-        type:     "account",
-        // Admins: no scopes needed (GHL grants full access by role)
-        // Standard users: always use Andres Sanchez's exact scope set
-        ...(isAdmin ? {} : { scopes: STANDARD_USER_SCOPES }),
-      };
+  // Fetch companyId automatically from the location
+  const locRes = await fetch(`${GHL_BASE}/locations/${LOCATION_ID}`, { headers });
+  const locData = await locRes.json();
+  const companyId = locData?.location?.companyId || locData?.companyId;
 
-      const response = await fetch(`${GHL_BASE}/users/`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      return res.status(response.status).json(data);
-    }
+  const payload = {
+    companyId,
+    locationIds: [LOCATION_ID],
+    firstName,
+    lastName,
+    email,
+    phone: phone || "",
+    password: generatePassword(),
+    role: role || "user",
+    type: "account",
+    ...(isAdmin ? {} : { scopes: STANDARD_USER_SCOPES }),
+  };
+
+  const response = await fetch(`${GHL_BASE}/users/`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  return res.status(response.status).json(data);
+}
 
     // ── DELETE: remove a user ──
     if (req.method === "DELETE") {
