@@ -1,1 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sasooness Law Group – Team Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1e2d5a; --navy2: #162246; --accent: #2a5caa; --bg: #f4f5f8;
+      --surface: #ffffff; --border: #dde1ea; --text: #1a1f2e; --muted: #7b839a;
+      --danger: #d94040; --success: #27916e; --radius: 10px;
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
+    .app { max-width: 1020px; margin: 0 auto; padding: 28px 24px; min-height: 100vh; }
 
+    /* Header */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 24px;
+      box-shadow: 0 2px 12px rgba(30,45,90,0.07);
+    }
+    .header-logo { height: 50px; width: auto; display: block; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+    .header-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--navy); }
+    .header-sub { font-size: 12px; color: var(--muted); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
+      border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+      font-weight: 500; cursor: pointer; border: none; transition: all 0.16s ease; white-space: nowrap;
+    }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,45,90,0.2); }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 6px 13px; font-size: 13px; }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    /* Stats */
+    .stats { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 22px; flex: 1; min-width: 130px; box-shadow: 0 1px 6px rgba(30,45,90,0.05);
+    }
+    .stat-card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+    .stat-card .value { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 700; margin-top: 3px; color: var(--navy); }
+    .stat-card .value.accent { color: var(--accent); }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .search-wrap { flex: 1; position: relative; min-width: 200px; }
+    .search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search-input {
+      width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+      padding: 9px 12px 9px 36px; outline: none; transition: border-color 0.16s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: var(--muted); }
+
+    /* Table */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 12px rgba(30,45,90,0.06); }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--navy); }
+    th { padding: 13px 18px; text-align: left; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.1px; color: rgba(255,255,255,0.75); }
+    td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background 0.13s; }
+    tbody tr:hover { background: #f0f3fa; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--accent)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .name-cell { display: flex; align-items: center; gap: 11px; }
+    .user-name { font-weight: 500; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+    .badge-admin { background: rgba(30,45,90,0.1); color: var(--navy); }
+    .badge-user  { background: rgba(42,92,170,0.1); color: var(--accent); }
+
+    /* States */
+    .state-row td { text-align: center; padding: 56px 20px; color: var(--muted); }
+    .spinner { width: 26px; height: 26px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Modal */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(10,15,35,0.55); backdrop-filter: blur(3px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+    .overlay.active { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 30px; width: 100%; max-width: 480px; animation: slideUp 0.2s ease; box-shadow: 0 20px 60px rgba(10,15,35,0.2); max-height: 90vh; overflow-y: auto; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .modal-header h2 { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--navy); }
+    .modal-divider { height: 1px; background: var(--border); margin: 16px 0; }
+    .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 13px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 5px; }
+    .form-group input, .form-group select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; outline: none; transition: border-color 0.16s; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--accent); background: #fff; }
+    .copy-box { background: #eef2fa; border: 1px solid #c5cfe8; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+    .copy-box select { width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; outline: none; margin-top: 8px; }
+    .copy-box p { font-size: 12px; color: var(--muted); margin-top: 7px; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* Toast */
+    .toast-wrap { position: fixed; bottom: 22px; right: 22px; display: flex; flex-direction: column; gap: 9px; z-index: 200; }
+    .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 11px 18px; font-size: 14px; animation: toastIn 0.22s ease; display: flex; align-items: center; gap: 9px; box-shadow: 0 4px 16px rgba(10,15,35,0.12); }
+    .toast.success { border-color: var(--success); color: var(--success); }
+    .toast.error   { border-color: var(--danger); color: var(--danger); }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <img class="header-logo" src="data:image/png;base64,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" alt="Sasooness Law Group" onerror="this.style.display='none'"/>
+    <div class="header-right">
+      <div class="header-title">Team Manager</div>
+      <div class="header-sub">Sub-Account User Management</div>
+    </div>
+    <button class="btn btn-primary" onclick="openAddModal()">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add User
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card"><div class="label">Total Users</div><div class="value accent" id="stat-total">—</div></div>
+    <div class="stat-card"><div class="label">Admins</div><div class="value" id="stat-admins">—</div></div>
+    <div class="stat-card"><div class="label">Standard Users</div><div class="value" id="stat-users">—</div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" placeholder="Search by name or email…" id="search-input" oninput="filterUsers()"/>
+    </div>
+    <button class="btn btn-ghost" onclick="loadUsers()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.09"/></svg>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User</th><th>Email</th><th>Phone</th><th>Role</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="users-tbody">
+        <tr class="state-row"><td colspan="5"><div class="spinner"></div>Loading users…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="20" height="20" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <h2>Add New User</h2>
+    </div>
+
+    <!-- Permissions info -->
+    <div class="copy-box">
+      <div class="section-label">📋 Permissions</div>
+      <p style="margin-top:6px; font-size:13px; color:var(--text);">
+        <strong>Standard users</strong> automatically receive the standard team permission set.<br/>
+        <strong>Admins</strong> receive full access.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+    <div class="section-label">User Details</div>
+
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="f-firstName" placeholder="John"/></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="f-lastName" placeholder="Doe"/></div>
+    </div>
+    <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="john@example.com"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone</label><input type="tel" id="f-phone" placeholder="+1 555 000 0000"/></div>
+      <div class="form-group">
+        <label>Role</label>
+        <select id="f-role"><option value="user">User</option><option value="admin">Admin</option></select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-primary" id="submit-btn" onclick="addUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+  let allUsers = [];
+
+  async function apiFetch(method, params = {}) {
+    const base = "/api/users";
+    let url = base;
+    if (method === "DELETE" && params.userId) url += `?userId=${params.userId}`;
+    const opts = { method, headers: { "Content-Type": "application/json" } };
+    if (method === "POST") opts.body = JSON.stringify(params);
+    const res = await fetch(url, opts);
+    return res.json();
+  }
+
+  async function loadUsers() {
+    setLoading(true);
+    try {
+      const data = await apiFetch("GET");
+      allUsers = data.users || data || [];
+      renderTable(allUsers);
+      updateStats(allUsers);
+    } catch (e) {
+      showToast("Failed to load users", "error");
+      setEmpty("Could not connect to the API.");
+    }
+  }
+
+  function populateCopyDropdown(users) {
+    const sel = document.getElementById("f-copy-from");
+    sel.innerHTML = '<option value="">— None (use default permissions) —</option>';
+    users.forEach(u => {
+      const opt = document.createElement("option");
+      opt.value = u.id;
+      opt.textContent = `${u.firstName||""} ${u.lastName||""} (${u.role||"user"})`;
+      sel.appendChild(opt);
+    });
+  }
+
+  function renderTable(users) {
+    const tbody = document.getElementById("users-tbody");
+    if (!users.length) { setEmpty("No users found."); return; }
+    tbody.innerHTML = users.map(u => {
+      const initials = `${(u.firstName||"?")[0]}${(u.lastName||"")[0]||""}`.toUpperCase();
+      const role = (u.role || "user").toLowerCase();
+      const badgeClass = role === "admin" ? "badge-admin" : "badge-user";
+      return `<tr>
+        <td><div class="name-cell"><div class="avatar">${initials}</div><div class="user-name">${u.firstName||""} ${u.lastName||""}</div></div></td>
+        <td>${u.email||"—"}</td>
+        <td>${u.phone||"—"}</td>
+        <td><span class="badge ${badgeClass}">${role}</span></td>
+        <td style="text-align:right"><button class="btn btn-danger" onclick="deleteUser('${u.id}','${(u.firstName||"")} ${(u.lastName||"")}')">Remove</button></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function setLoading(on) {
+    if (on) document.getElementById("users-tbody").innerHTML =
+      `<tr class="state-row"><td colspan="5"><div class="spinner"></div>Loading…</td></tr>`;
+  }
+  function setEmpty(msg) {
+    document.getElementById("users-tbody").innerHTML =
+      `<tr class="state-row"><td colspan="5">${msg}</td></tr>`;
+  }
+  function updateStats(users) {
+    document.getElementById("stat-total").textContent  = users.length;
+    document.getElementById("stat-admins").textContent = users.filter(u=>(u.role||"").toLowerCase()==="admin").length;
+    document.getElementById("stat-users").textContent  = users.filter(u=>(u.role||"").toLowerCase()!=="admin").length;
+  }
+  function filterUsers() {
+    const q = document.getElementById("search-input").value.toLowerCase();
+    renderTable(allUsers.filter(u=>`${u.firstName} ${u.lastName} ${u.email}`.toLowerCase().includes(q)));
+  }
+
+  async function deleteUser(id, name) {
+    if (!confirm(`Remove "${name}" from the team?`)) return;
+    try {
+      await apiFetch("DELETE", { userId: id });
+      showToast(`${name} removed`, "success");
+      loadUsers();
+    } catch (e) { showToast("Failed to remove user", "error"); }
+  }
+
+  function openAddModal()  { document.getElementById("add-modal").classList.add("active"); }
+  function closeAddModal() {
+    document.getElementById("add-modal").classList.remove("active");
+    ["f-firstName","f-lastName","f-email","f-phone"].forEach(id => document.getElementById(id).value="");
+    document.getElementById("f-role").value = "user";
+  }
+
+  async function addUser() {
+    const firstName = document.getElementById("f-firstName").value.trim();
+    const lastName  = document.getElementById("f-lastName").value.trim();
+    const email     = document.getElementById("f-email").value.trim();
+    const phone     = document.getElementById("f-phone").value.trim();
+    const role      = document.getElementById("f-role").value;
+
+    if (!firstName || !email) { showToast("First name and email are required", "error"); return; }
+
+    const btn = document.getElementById("submit-btn");
+    btn.disabled = true; btn.textContent = "Creating…";
+    try {
+      const res = await apiFetch("POST", { firstName, lastName, email, phone, role });
+      if (res.id || res.user) {
+        showToast(`${firstName} added successfully!`, "success");
+        closeAddModal(); loadUsers();
+      } else {
+        showToast(res.message || "Could not add user", "error");
+      }
+    } catch (e) { showToast("Failed to add user", "error"); }
+    finally { btn.disabled = false; btn.textContent = "Create User"; }
+  }
+
+  function showToast(msg, type="success") {
+    const wrap = document.getElementById("toast-wrap");
+    const t = document.createElement("div");
+    t.className = `toast ${type}`;
+    t.innerHTML = `<span>${type==="success"?"✓":"✕"}</span> ${msg}`;
+    wrap.appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+
+  document.getElementById("add-modal").addEventListener("click", function(e) {
+    if (e.target === this) closeAddModal();
+  });
+
+  loadUsers();
+</script>
+</body>
+</html>
