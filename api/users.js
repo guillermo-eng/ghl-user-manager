@@ -139,7 +139,6 @@ export default async function handler(req, res) {
       const isAdmin = (role || "user") === "admin";
 
       const payload = {
-        companyId:   LOCATION_ID,
         locationIds: [LOCATION_ID],
         firstName,
         lastName,
