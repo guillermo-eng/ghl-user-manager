@@ -15,7 +15,6 @@
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; }
     .app { max-width: 1020px; margin: 0 auto; padding: 28px 24px; min-height: 100vh; }
 
-    /* Header */
     .header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
@@ -28,7 +27,6 @@
     .header-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--navy); }
     .header-sub { font-size: 12px; color: var(--muted); }
 
-    /* Buttons */
     .btn {
       display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
       border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 14px;
@@ -42,7 +40,12 @@
     .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
-    /* Stats */
+    /* Role toggle buttons */
+    .btn-make-admin { background: transparent; color: var(--navy); border: 1px solid var(--navy); padding: 6px 13px; font-size: 13px; }
+    .btn-make-admin:hover { background: var(--navy); color: #fff; }
+    .btn-make-user { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 6px 13px; font-size: 13px; }
+    .btn-make-user:hover { background: var(--accent); color: #fff; }
+
     .stats { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
     .stat-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
@@ -52,7 +55,6 @@
     .stat-card .value { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 700; margin-top: 3px; color: var(--navy); }
     .stat-card .value.accent { color: var(--accent); }
 
-    /* Toolbar */
     .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
     .search-wrap { flex: 1; position: relative; min-width: 200px; }
     .search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
@@ -64,7 +66,6 @@
     .search-input:focus { border-color: var(--accent); }
     .search-input::placeholder { color: var(--muted); }
 
-    /* Table */
     .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 12px rgba(30,45,90,0.06); }
     table { width: 100%; border-collapse: collapse; }
     thead { background: var(--navy); }
@@ -79,13 +80,12 @@
     .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
     .badge-admin { background: rgba(30,45,90,0.1); color: var(--navy); }
     .badge-user  { background: rgba(42,92,170,0.1); color: var(--accent); }
+    .action-cell { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 
-    /* States */
     .state-row td { text-align: center; padding: 56px 20px; color: var(--muted); }
     .spinner { width: 26px; height: 26px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Modal */
     .overlay { display: none; position: fixed; inset: 0; background: rgba(10,15,35,0.55); backdrop-filter: blur(3px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
     .overlay.active { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 30px; width: 100%; max-width: 480px; animation: slideUp 0.2s ease; box-shadow: 0 20px 60px rgba(10,15,35,0.2); max-height: 90vh; overflow-y: auto; }
@@ -100,11 +100,9 @@
     .form-group input, .form-group select { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; outline: none; transition: border-color 0.16s; }
     .form-group input:focus, .form-group select:focus { border-color: var(--accent); background: #fff; }
     .copy-box { background: #eef2fa; border: 1px solid #c5cfe8; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
-    .copy-box select { width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; outline: none; margin-top: 8px; }
     .copy-box p { font-size: 12px; color: var(--muted); margin-top: 7px; }
     .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
-    /* Toast */
     .toast-wrap { position: fixed; bottom: 22px; right: 22px; display: flex; flex-direction: column; gap: 9px; z-index: 200; }
     .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 11px 18px; font-size: 14px; animation: toastIn 0.22s ease; display: flex; align-items: center; gap: 9px; box-shadow: 0 4px 16px rgba(10,15,35,0.12); }
     .toast.success { border-color: var(--success); color: var(--success); }
@@ -115,9 +113,8 @@
 <body>
 <div class="app">
 
-  <!-- Header -->
   <div class="header">
-    <img class="header-logo" src="https://assets.cdn.filesafe.space/h9Cescnz9vGFUmWHFp7c/media/695bfb7d6aaf166874ad789a.png" " alt="Sasooness Law Group" onerror="this.style.display='none'"/>
+    <img class="header-logo" src="https://assets.cdn.filesafe.space/h9Cescnz9vGFUmWHFp7c/media/695bfb7d6aaf166874ad789a.png" alt="Sasooness Law Group" onerror="this.style.display='none'"/>
     <div class="header-right">
       <div class="header-title">Team Manager</div>
       <div class="header-sub">Sub-Account User Management</div>
@@ -128,14 +125,12 @@
     </button>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat-card"><div class="label">Total Users</div><div class="value accent" id="stat-total">—</div></div>
     <div class="stat-card"><div class="label">Admins</div><div class="value" id="stat-admins">—</div></div>
     <div class="stat-card"><div class="label">Standard Users</div><div class="value" id="stat-users">—</div></div>
   </div>
 
-  <!-- Toolbar -->
   <div class="toolbar">
     <div class="search-wrap">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -147,7 +142,6 @@
     </button>
   </div>
 
-  <!-- Table -->
   <div class="table-wrap">
     <table>
       <thead>
@@ -171,7 +165,6 @@
       <h2>Add New User</h2>
     </div>
 
-    <!-- Permissions info -->
     <div class="copy-box">
       <div class="section-label">📋 Permissions</div>
       <p style="margin-top:6px; font-size:13px; color:var(--text);">
@@ -212,8 +205,9 @@
     const base = "/api/users";
     let url = base;
     if (method === "DELETE" && params.userId) url += `?userId=${params.userId}`;
+    if (method === "PUT" && params.userId) url += `?userId=${params.userId}`;
     const opts = { method, headers: { "Content-Type": "application/json" } };
-    if (method === "POST") opts.body = JSON.stringify(params);
+    if (method === "POST" || method === "PUT") opts.body = JSON.stringify(params);
     const res = await fetch(url, opts);
     return res.json();
   }
@@ -231,30 +225,25 @@
     }
   }
 
-  function populateCopyDropdown(users) {
-    const sel = document.getElementById("f-copy-from");
-    sel.innerHTML = '<option value="">— None (use default permissions) —</option>';
-    users.forEach(u => {
-      const opt = document.createElement("option");
-      opt.value = u.id;
-      opt.textContent = `${u.firstName||""} ${u.lastName||""} (${u.role||"user"})`;
-      sel.appendChild(opt);
-    });
-  }
-
   function renderTable(users) {
     const tbody = document.getElementById("users-tbody");
     if (!users.length) { setEmpty("No users found."); return; }
     tbody.innerHTML = users.map(u => {
       const initials = `${(u.firstName||"?")[0]}${(u.lastName||"")[0]||""}`.toUpperCase();
-      const role = (u.role || "user").toLowerCase();
+      const role = (u.roles?.role || u.role || "user").toLowerCase();
       const badgeClass = role === "admin" ? "badge-admin" : "badge-user";
+      const toggleBtn = role === "admin"
+        ? `<button class="btn btn-make-user" onclick="toggleRole('${u.id}','${role}','${(u.firstName||"").trim()}')">Make User</button>`
+        : `<button class="btn btn-make-admin" onclick="toggleRole('${u.id}','${role}','${(u.firstName||"").trim()}')">Make Admin</button>`;
       return `<tr>
         <td><div class="name-cell"><div class="avatar">${initials}</div><div class="user-name">${u.firstName||""} ${u.lastName||""}</div></div></td>
         <td>${u.email||"—"}</td>
         <td>${u.phone||"—"}</td>
         <td><span class="badge ${badgeClass}">${role}</span></td>
-        <td style="text-align:right"><button class="btn btn-danger" onclick="deleteUser('${u.id}','${(u.firstName||"")} ${(u.lastName||"")}')">Remove</button></td>
+        <td><div class="action-cell">
+          ${toggleBtn}
+          <button class="btn btn-danger" onclick="deleteUser('${u.id}','${(u.firstName||"").trim()} ${(u.lastName||"").trim()}')">Remove</button>
+        </div></td>
       </tr>`;
     }).join("");
   }
@@ -269,12 +258,22 @@
   }
   function updateStats(users) {
     document.getElementById("stat-total").textContent  = users.length;
-    document.getElementById("stat-admins").textContent = users.filter(u=>(u.role||"").toLowerCase()==="admin").length;
-    document.getElementById("stat-users").textContent  = users.filter(u=>(u.role||"").toLowerCase()!=="admin").length;
+    document.getElementById("stat-admins").textContent = users.filter(u=>(u.roles?.role||u.role||"").toLowerCase()==="admin").length;
+    document.getElementById("stat-users").textContent  = users.filter(u=>(u.roles?.role||u.role||"").toLowerCase()!=="admin").length;
   }
   function filterUsers() {
     const q = document.getElementById("search-input").value.toLowerCase();
     renderTable(allUsers.filter(u=>`${u.firstName} ${u.lastName} ${u.email}`.toLowerCase().includes(q)));
+  }
+
+  async function toggleRole(id, currentRole, name) {
+    const newRole = currentRole === "admin" ? "user" : "admin";
+    if (!confirm(`Change ${name} to ${newRole}?`)) return;
+    try {
+      await apiFetch("PUT", { userId: id, role: newRole });
+      showToast(`${name} is now ${newRole}`, "success");
+      loadUsers();
+    } catch (e) { showToast("Failed to update role", "error"); }
   }
 
   async function deleteUser(id, name) {
